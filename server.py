@@ -10,16 +10,17 @@ print(f"СЕРВЕР: Подключился клиент с адресом {add
 msg = ''
 while True:
     data = conn.recv(1024)
-    if not data:
-        print("СЕРВЕР: Клиент прекратил отправку данных или отключился.")
+    if data.decode() == "shutdown":
+        print("СЕРВЕР: Клиент написал отключил сервер.")
+        conn.close()
+        sock.close()
         break
     print(f"СЕРВЕР: Получена порция данных от клиента: {data.decode()}")
-    msg += data.decode()
+    msg += " " + data.decode()
     conn.send(data)
     print("СЕРВЕР: Порция данных отправлена обратно клиенту.")
-print("СЕРВЕР: Полное сообщение, полученное от клиента:")
-print(msg)
-conn.close()
-print("СЕРВЕР: Клиент отключился.")
-sock.close()
+    if not data:
+        print("СЕРВЕР: Клиент отключился.")
+        print("СЕРВЕР: Полное сообщение, полученное от клиента:")
+        print(msg)
 print("СЕРВЕР: Остановка сервера. Работа завершена.")
