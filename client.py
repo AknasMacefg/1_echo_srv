@@ -17,6 +17,10 @@ while True:
     data = sock.recv(1024)
     print("КЛИЕНТ: Данные получены от сервера.")
     print("Ответ от сервера:", data.decode())
+    if msg == "shutdown":
+        sock.close()
+        print("КЛИЕНТ: Соединение с сервером закрыто.")
+        break
 
 
 
